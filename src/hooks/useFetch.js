@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export const useFetch = (url) => {
+export const useFetch = (url, _options) => {
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
+
+  const options = useRef(_options).current // use useRef to wrap a reference value such as object/array argument which is a useEffect dependency since without it, React will think the object/array is new every time it rerenders triggering another rerender which creates an infinite loop.
 
   useEffect(() => {
     const controller = new AbortController()
@@ -36,7 +38,7 @@ export const useFetch = (url) => {
     return () => {  //this is a cleanup function which makes sure no errors occur if calling component gets unmounted while fetching data. This will abort the fetch which takes the AbortController signal as an argument.
       controller.abort()
     }
-  }, [url])
+  }, [url, options])
 
   return { data, isLoading, error }
 
