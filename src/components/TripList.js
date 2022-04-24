@@ -8,7 +8,7 @@ export default function TripList() {
 
   const [url, setUrl] = useState('http://localhost:3000/trips')
 
-  const { data: trips, isLoading, error } = useFetch(url)
+  const { data: trips, isLoading, error } = useFetch(url, { type: 'GET' }) // using  { type: 'GET' } just to show that we need useRef in useFetch to make sure we avoid infinite loop since react will think the options object of useFetch is brand new every time it rerenders resulting in infinite loop rerenders. useRef makes said object persist thus preventing rerenders.
 
   return (
     <div className='trip-list'>
